@@ -7,14 +7,15 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.auto.AutoConfigurer;
 import frc.robot.auto.RotationalDrive;
+import frc.robot.auto.StraightDrive;
 
 public class DriveSubsystem extends SubsystemBase {
   WPI_VictorSPX frontLeftVictor;
@@ -28,8 +29,11 @@ public class DriveSubsystem extends SubsystemBase {
   DifferentialDrive differentialDrive;
   Joystick driveJoystick;
   AHRS navx;
+  Encoder leftEncoder;
+  Encoder rightEncoder;
   AutoConfigurer autoConfigurer;
   RotationalDrive rotationalDrive;
+  StraightDrive straightDrive;
   public DriveSubsystem() {
     frontLeftVictor = new WPI_VictorSPX(Constants.DriveConstants.FRONT_LEFT_VICTOR_ID);
     midLeftVictor = new WPI_VictorSPX(Constants.DriveConstants.MID_LEFT_VICTOR_ID);
@@ -41,8 +45,11 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotorControllerGroup = new MotorControllerGroup(frontRightVictor,midRightVictor,rearRightVictor);
     driveJoystick = new Joystick(Constants.JOYSTICK_PIN);
     navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
+    leftEncoder = new Encoder(Constants.DriveConstants.LEFT_ENCODER_CHANNEL_A,Constants.DriveConstants.LEFT_ENCODER_CHANNEL_B);
+    rightEncoder = new Encoder(Constants.DriveConstants.RIGHT_ENCODER_CHANNEL_A,Constants.DriveConstants.RIGHT_ENCODER_CHANNEL_B);
     autoConfigurer = new AutoConfigurer();
     rotationalDrive = new RotationalDrive(autoConfigurer, navx);
+    straightDrive = new StraightDrive(autoConfigurer, leftEncoder, rightEncoder);
   }
 
   public void arcadeDrive(double maxSpeed) {
@@ -51,6 +58,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void goXSecond(double speed) {
     differentialDrive.arcadeDrive(speed, speed);
+  }
+
+  public void goXMeter(double setpoint) {
+    double output = straightDrive.goXmeter(setpoint);
+    differentialDrive.arcadeDrive(output, 0);
   }
 
   public void turnXSecond(double speed) {
@@ -63,7 +75,5 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    SmartDashboard.putNumber("NAVX YAW: ", navx.getYaw());
-  }
+  public void periodic() {}
 }

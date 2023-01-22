@@ -7,16 +7,14 @@ package frc.robot.commands.auto_command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
-public class TurnXDegrees extends CommandBase {
-  /** Creates a new TurnXDegrees. */
+public class GoXMeter extends CommandBase {
+  /** Creates a new GoXMeter. */
   DriveSubsystem driveSubsystem;
   double setpoint;
-  double speed;
-  public TurnXDegrees(DriveSubsystem driveSubsystem, double setpoint, double speed) {
+  public GoXMeter(DriveSubsystem driveSubsystem, double setpoint) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.setpoint = setpoint;
-    this.speed = speed;
   }
 
   // Called when the command is initially scheduled.
@@ -26,7 +24,7 @@ public class TurnXDegrees extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveSubsystem.turnXDegrees(setpoint, speed);
+    driveSubsystem.goXMeter(setpoint);
   }
 
   // Called once the command ends or is interrupted.
