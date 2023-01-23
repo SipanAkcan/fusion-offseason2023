@@ -40,7 +40,7 @@ public class GoXSecond extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.get() < second) {
+    if (timer.get() > second) {
       return true;
     }
     return false;

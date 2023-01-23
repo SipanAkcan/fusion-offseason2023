@@ -1,4 +1,4 @@
-package frc.robot.auto_core;
+package frc.robot.auto;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
@@ -22,12 +22,12 @@ public class StraightDrive{
     }
 
     public double goXfeet(double feetSetpoint){
-       return calculate(getEncodersFeetAverage(), feetSetpoint);;
+       return calculate(getEncodersFeetAverage(), feetSetpoint);
     }
 
     // PID Controller
     public double calculate(double currentDistance, double setpoint){
-        return autoConfigurer.getEncoderPID().calculate(currentDistance, setpoint);;
+        return autoConfigurer.getEncoderPID().calculate(currentDistance, setpoint);
     }
 
     // Use this methods for measurement informations

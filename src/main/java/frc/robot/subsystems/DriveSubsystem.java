@@ -43,6 +43,8 @@ public class DriveSubsystem extends SubsystemBase {
     rearRightVictor = new WPI_VictorSPX(Constants.DriveConstants.REAR_RIGHT_VICTOR_ID);
     leftMotorControllerGroup = new MotorControllerGroup(frontLeftVictor,midLeftVictor,rearLeftVictor);
     rightMotorControllerGroup = new MotorControllerGroup(frontRightVictor,midRightVictor,rearRightVictor);
+    rightMotorControllerGroup.setInverted(true);
+    differentialDrive = new DifferentialDrive(leftMotorControllerGroup, rightMotorControllerGroup);
     driveJoystick = new Joystick(Constants.JOYSTICK_PIN);
     navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
     leftEncoder = new Encoder(Constants.DriveConstants.LEFT_ENCODER_CHANNEL_A,Constants.DriveConstants.LEFT_ENCODER_CHANNEL_B);
@@ -62,16 +64,16 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void goXMeter(double setpoint) {
     double output = straightDrive.goXmeter(setpoint);
-    differentialDrive.arcadeDrive(output, 0);
+    differentialDrive.arcadeDrive(0, output);
   }
 
   public void turnXSecond(double speed) {
-    differentialDrive.arcadeDrive(0, speed);
+    differentialDrive.arcadeDrive(speed, 0);
   }
 
   public void turnXDegrees(double setpoint, double speed) {
     double output = rotationalDrive.turnXDegrees(setpoint);
-    differentialDrive.arcadeDrive(0, output * speed);
+    differentialDrive.arcadeDrive(output, 0);
   }
 
   @Override

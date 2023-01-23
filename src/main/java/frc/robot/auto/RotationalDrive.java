@@ -2,8 +2,6 @@ package frc.robot.auto;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-
 public class RotationalDrive {
     
     private AutoConfigurer autoConfigurer;
