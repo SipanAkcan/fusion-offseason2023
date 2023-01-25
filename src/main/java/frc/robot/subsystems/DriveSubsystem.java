@@ -44,7 +44,7 @@ public class DriveSubsystem extends SubsystemBase {
     leftMotorControllerGroup = new MotorControllerGroup(frontLeftVictor,midLeftVictor,rearLeftVictor);
     rightMotorControllerGroup = new MotorControllerGroup(frontRightVictor,midRightVictor,rearRightVictor);
     rightMotorControllerGroup.setInverted(true);
-    differentialDrive = new DifferentialDrive(leftMotorControllerGroup, rightMotorControllerGroup);
+    differentialDrive = new DifferentialDrive(rightMotorControllerGroup, leftMotorControllerGroup);
     driveJoystick = new Joystick(Constants.JOYSTICK_PIN);
     navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
     leftEncoder = new Encoder(Constants.DriveConstants.LEFT_ENCODER_CHANNEL_A,Constants.DriveConstants.LEFT_ENCODER_CHANNEL_B);
@@ -55,25 +55,30 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double maxSpeed) {
-    differentialDrive.arcadeDrive(driveJoystick.getRawAxis(2) * maxSpeed, driveJoystick.getRawAxis(1) * maxSpeed);
+    differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * maxSpeed, driveJoystick.getRawAxis(2) * maxSpeed);
   }
 
   public void goXSecond(double speed) {
-    differentialDrive.arcadeDrive(speed, speed);
+    differentialDrive.arcadeDrive(speed, 0);
   }
 
   public void goXMeter(double setpoint) {
     double output = straightDrive.goXmeter(setpoint);
-    differentialDrive.arcadeDrive(0, output);
+    differentialDrive.arcadeDrive(output, 0);
   }
 
   public void turnXSecond(double speed) {
-    differentialDrive.arcadeDrive(speed, 0);
+    differentialDrive.arcadeDrive(0, speed);
   }
 
   public void turnXDegrees(double setpoint, double speed) {
     double output = rotationalDrive.turnXDegrees(setpoint);
-    differentialDrive.arcadeDrive(output, 0);
+    differentialDrive.arcadeDrive(0, output);
+  }
+
+  public void stopDriveMotors() {
+    leftMotorControllerGroup.stopMotor();
+    rightMotorControllerGroup.stopMotor();
   }
 
   @Override
