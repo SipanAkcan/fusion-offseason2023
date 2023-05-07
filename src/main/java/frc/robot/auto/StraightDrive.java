@@ -1,5 +1,7 @@
 package frc.robot.auto;
 
+import com.revrobotics.RelativeEncoder;
+
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Encoder;
 
@@ -7,10 +9,10 @@ public class StraightDrive{
 
     private AutoConfigurer autoConfigurer;
 
-    private Encoder leftEncoder;
-    private Encoder rightEncoder;
+    private RelativeEncoder leftEncoder;
+    private RelativeEncoder rightEncoder;
 
-    public StraightDrive(AutoConfigurer autoConfigurer, Encoder leftEncoder, Encoder rightEncoder){
+    public StraightDrive(AutoConfigurer autoConfigurer, RelativeEncoder leftEncoder, RelativeEncoder rightEncoder){
         this.autoConfigurer = autoConfigurer;
         this.leftEncoder = leftEncoder;
         this.rightEncoder = rightEncoder;
@@ -32,14 +34,14 @@ public class StraightDrive{
 
     // Use this methods for measurement informations
     public double getEncodersFeetAverage(){
-        return (leftEncoder.get()*AutoConstants.K_DRIVE_TICK_2_FEET + rightEncoder.get()*AutoConstants.K_DRIVE_TICK_2_FEET)/2;
+        return (leftEncoder.getCountsPerRevolution()*AutoConstants.K_DRIVE_TICK_2_FEET + rightEncoder.getCountsPerRevolution()*AutoConstants.K_DRIVE_TICK_2_FEET)/2;
     }
 
     public double getLeftEncoderFeet(){
-        return leftEncoder.get()*AutoConstants.K_DRIVE_TICK_2_FEET;
+        return leftEncoder.getCountsPerRevolution()*AutoConstants.K_DRIVE_TICK_2_FEET;
     }
 
     public double getRightEncoderFeet(){
-        return rightEncoder.get()*AutoConstants.K_DRIVE_TICK_2_FEET;
+        return rightEncoder.getCountsPerRevolution()*AutoConstants.K_DRIVE_TICK_2_FEET;
     }
 }

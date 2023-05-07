@@ -4,10 +4,11 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -18,40 +19,30 @@ import frc.robot.auto.RotationalDrive;
 import frc.robot.auto.StraightDrive;
 
 public class DriveSubsystem extends SubsystemBase {
-  WPI_VictorSPX frontLeftVictor;
-  WPI_VictorSPX midLeftVictor;
-  WPI_VictorSPX rearLeftVictor;
-  WPI_VictorSPX frontRightVictor;
-  WPI_VictorSPX midRightVictor;
-  WPI_VictorSPX rearRightVictor;
-  MotorControllerGroup leftMotorControllerGroup;
-  MotorControllerGroup rightMotorControllerGroup;
-  DifferentialDrive differentialDrive;
-  Joystick driveJoystick;
-  AHRS navx;
-  Encoder leftEncoder;
-  Encoder rightEncoder;
-  AutoConfigurer autoConfigurer;
-  RotationalDrive rotationalDrive;
-  StraightDrive straightDrive;
+  CANSparkMax frontLeftSpark = new CANSparkMax(Constants.DriveConstants.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearLeftSpark = new CANSparkMax(Constants.DriveConstants.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax frontRightSpark = new CANSparkMax(Constants.DriveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearRightSpark = new CANSparkMax(Constants.DriveConstants.MID_RIGHT_SPARK_ID, MotorType.kBrushless);
+
+  RelativeEncoder rightEncoder = frontRightSpark.getEncoder();
+  RelativeEncoder leftEncoder = frontLeftSpark.getEncoder();
+
+  MotorControllerGroup rightMotorControllerGroup = new MotorControllerGroup(frontRightSpark,rearRightSpark);
+  MotorControllerGroup leftMotorControllerGroup = new MotorControllerGroup(frontLeftSpark,rearLeftSpark);
+
+  DifferentialDrive differentialDrive = new DifferentialDrive(rightMotorControllerGroup, leftMotorControllerGroup);
+
+  AHRS navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
+
+  Joystick driveJoystick = new Joystick(Constants.JOYSTICK_PIN);
+
+  AutoConfigurer autoConfigurer = new AutoConfigurer();
+
+  RotationalDrive rotationalDrive = new RotationalDrive(autoConfigurer, navx);
+  StraightDrive straightDrive = new StraightDrive(autoConfigurer, leftEncoder, rightEncoder);
+  
   public DriveSubsystem() {
-    frontLeftVictor = new WPI_VictorSPX(Constants.DriveConstants.FRONT_LEFT_VICTOR_ID);
-    midLeftVictor = new WPI_VictorSPX(Constants.DriveConstants.MID_LEFT_VICTOR_ID);
-    rearLeftVictor = new WPI_VictorSPX(Constants.DriveConstants.REAR_LEFT_VICTOR_ID);
-    frontRightVictor = new WPI_VictorSPX(Constants.DriveConstants.FRONT_RIGHT_VICTOR_ID);
-    midRightVictor = new WPI_VictorSPX(Constants.DriveConstants.MID_RIGHT_VICTOR_ID);
-    rearRightVictor = new WPI_VictorSPX(Constants.DriveConstants.REAR_RIGHT_VICTOR_ID);
-    leftMotorControllerGroup = new MotorControllerGroup(frontLeftVictor,midLeftVictor,rearLeftVictor);
-    rightMotorControllerGroup = new MotorControllerGroup(frontRightVictor,midRightVictor,rearRightVictor);
     rightMotorControllerGroup.setInverted(true);
-    differentialDrive = new DifferentialDrive(rightMotorControllerGroup, leftMotorControllerGroup);
-    driveJoystick = new Joystick(Constants.JOYSTICK_PIN);
-    navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
-    leftEncoder = new Encoder(Constants.DriveConstants.LEFT_ENCODER_CHANNEL_A,Constants.DriveConstants.LEFT_ENCODER_CHANNEL_B);
-    rightEncoder = new Encoder(Constants.DriveConstants.RIGHT_ENCODER_CHANNEL_A,Constants.DriveConstants.RIGHT_ENCODER_CHANNEL_B);
-    autoConfigurer = new AutoConfigurer();
-    rotationalDrive = new RotationalDrive(autoConfigurer, navx);
-    straightDrive = new StraightDrive(autoConfigurer, leftEncoder, rightEncoder);
   }
 
   public void arcadeDrive(double maxSpeed) {
