@@ -3,7 +3,6 @@ package frc.robot.auto;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Encoder;
 
 public class StraightDrive{
 
