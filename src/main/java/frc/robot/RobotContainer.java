@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ArcadeDrive;
-import frc.robot.commands.auto_command.GoXSecond;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class RobotContainer {
@@ -20,10 +19,10 @@ public class RobotContainer {
   private void configureBindings() {}
 
   public Command getAutonomousCommand() {
-    return new GoXSecond(driveSubsystem, 0.7, 2);
+    //return new GoXSecond(driveSubsystem, 0.7, 2);
     //return new TurnXSecond(driveSubsystem, 0.5, 1);
     //return new TurnXDegrees(driveSubsystem, 180, 0.5);
     //return new GoXMeter(driveSubsystem, 1);
-    //return null;
+    return null;
   }
 }

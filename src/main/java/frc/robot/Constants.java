@@ -17,9 +17,5 @@ public final class Constants {
     public static final int MID_RIGHT_SPARK_ID = 5;
     public static final int REAR_RIGHT_SPARK_ID = 6;
     public static final Port NAVX_PORT = SPI.Port.kMXP;
-    public static final int LEFT_ENCODER_CHANNEL_A = 1;
-    public static final int LEFT_ENCODER_CHANNEL_B = 2;
-    public static final int RIGHT_ENCODER_CHANNEL_A = 3;
-    public static final int RIGHT_ENCODER_CHANNEL_B = 4;
   }
 }
