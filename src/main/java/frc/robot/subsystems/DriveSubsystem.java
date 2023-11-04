@@ -14,15 +14,19 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 import frc.robot.auto.AutoConfigurer;
 import frc.robot.auto.RotationalDrive;
 import frc.robot.auto.StraightDrive;
 
 public class DriveSubsystem extends SubsystemBase {
-  CANSparkMax frontLeftSpark = new CANSparkMax(Constants.DriveConstants.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax rearLeftSpark = new CANSparkMax(Constants.DriveConstants.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax frontRightSpark = new CANSparkMax(Constants.DriveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax rearRightSpark = new CANSparkMax(Constants.DriveConstants.MID_RIGHT_SPARK_ID, MotorType.kBrushless);
+  Constants constants = new Constants();
+  DriveConstants driveConstants = new DriveConstants();
+
+  CANSparkMax frontLeftSpark = new CANSparkMax(driveConstants.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearLeftSpark = new CANSparkMax(driveConstants.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax frontRightSpark = new CANSparkMax(driveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.MID_RIGHT_SPARK_ID, MotorType.kBrushless);
 
   RelativeEncoder rightEncoder = frontRightSpark.getEncoder();
   RelativeEncoder leftEncoder = frontLeftSpark.getEncoder();
@@ -32,9 +36,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   DifferentialDrive differentialDrive = new DifferentialDrive(rightMotorControllerGroup, leftMotorControllerGroup);
 
-  AHRS navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
+  AHRS navx = new AHRS(driveConstants.NAVX_PORT);
 
-  Joystick driveJoystick = new Joystick(Constants.JOYSTICK_PIN);
+
+  Joystick driveJoystick = new Joystick(constants.JOYSTICK_PIN);
 
   AutoConfigurer autoConfigurer = new AutoConfigurer();
 
@@ -46,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double maxSpeed) {
-    differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * maxSpeed, driveJoystick.getRawAxis(2) * maxSpeed);
+    differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * maxSpeed, driveJoystick.getRawAxis(4) * maxSpeed);
   }
 
   public void goXSecond(double speed) {
