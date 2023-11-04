@@ -20,7 +20,7 @@ public class GripperSubsystem extends SubsystemBase {
   public GripperSubsystem() {}
 
   public void givePower2Gripper(double speed) {
-    gripperSpark.set(-speed);
+    gripperSpark.set(speed);
     
   }
 

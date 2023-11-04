@@ -31,14 +31,18 @@ public class RobotContainer {
 
   private void configureBindings() {
     new JoystickButton(joystick, 1).whileTrue(new LookUp(armSubsystem, 0.4));
+    new JoystickButton(joystick, 1).whileFalse(new LookUp(armSubsystem, 0));
     new JoystickButton(joystick, 2).whileTrue(new LookDown(armSubsystem, 0.4));
-    new JoystickButton(joystick, 3).whileTrue(new Shoot(gripperubsystem, 0.8));
-    new JoystickButton(joystick, 4).whileTrue(new InTake(gripperubsystem, 0.8));
+    new JoystickButton(joystick, 2).whileFalse(new LookDown(armSubsystem, 0));
+    new JoystickButton(joystick, 3).whileTrue(new Shoot(gripperubsystem, 0.4));
+    new JoystickButton(joystick, 3).whileFalse(new Shoot(gripperubsystem, 0));
+    new JoystickButton(joystick, 4).whileTrue(new InTake(gripperubsystem, 0.4));
+    new JoystickButton(joystick, 4).whileFalse(new InTake(gripperubsystem, 0));
   }
 
   public Command getAutonomousCommand() {
     //return new GoXSecond(driveSubsystem, 0.7, 2);
-    //return new TurnXSecond(driveSubsystem, 0.5, 1);
+    //return new TurnXSecond(driveSubsystem, 0.>'5, 1);
     //return new TurnXDegrees(driveSubsystem, 180, 0.5);
     //return new GoXMeter(driveSubsystem, 1);
     return null;
