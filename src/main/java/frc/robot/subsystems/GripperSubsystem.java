@@ -21,7 +21,6 @@ public class GripperSubsystem extends SubsystemBase {
 
   public void givePower2Gripper(double speed) {
     gripperSpark.set(speed);
-    
   }
 
   @Override

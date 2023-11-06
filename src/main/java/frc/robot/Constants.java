@@ -17,7 +17,7 @@ public final class Constants {
     public final Port NAVX_PORT = SPI.Port.kMXP;
   }
   public static class ArmConstants {
-    public final int WRIST_SPARK_ID = 4;
+    public final int ARM_SPARK_ID = 4;
   }
   public static class GripperConstants {
     public final int GRIPPER_SPARK_ID = 6;

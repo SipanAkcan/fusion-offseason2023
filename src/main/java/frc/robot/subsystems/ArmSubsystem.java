@@ -13,7 +13,7 @@ import frc.robot.Constants.ArmConstants;
 public class ArmSubsystem extends SubsystemBase {
   /** Creates a new ArmSubsystem. */
   ArmConstants armConstants = new ArmConstants();
-  CANSparkMax armSpark = new CANSparkMax(armConstants.WRIST_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax armSpark = new CANSparkMax(armConstants.ARM_SPARK_ID, MotorType.kBrushless);
   
   public ArmSubsystem() {}
 
