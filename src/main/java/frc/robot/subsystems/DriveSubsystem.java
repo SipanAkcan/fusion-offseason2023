@@ -26,7 +26,7 @@ public class DriveSubsystem extends SubsystemBase {
   CANSparkMax frontLeftSpark = new CANSparkMax(driveConstants.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
   CANSparkMax rearLeftSpark = new CANSparkMax(driveConstants.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
   CANSparkMax frontRightSpark = new CANSparkMax(driveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.MID_RIGHT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
   RelativeEncoder rightEncoder = frontRightSpark.getEncoder();
   RelativeEncoder leftEncoder = frontLeftSpark.getEncoder();
@@ -51,7 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void arcadeDrive(double maxSpeed) {
-    differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * maxSpeed, driveJoystick.getRawAxis(4) * maxSpeed);
+    differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * -maxSpeed, driveJoystick.getRawAxis(2) * maxSpeed);
   }
 
   public void goXSecond(double speed) {
