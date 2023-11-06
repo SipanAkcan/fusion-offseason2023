@@ -52,15 +52,7 @@ public class DriveSubsystem extends SubsystemBase {
   double encoderToFeet;
   double setpoint;
   double autoStraight;
-  public DriveSubsystem() {
-    rightMotorControllerGroup.setInverted(true);
-    rightEncoder = frontRightSpark.getEncoder();
-    leftEncoder = frontLeftSpark.getEncoder();
-    SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
-    SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
-    encoderToFeet = (rightEncoder.getCountsPerRevolution() + leftEncoder.getCountsPerRevolution()/2) * constants.K_DRIVE_TICK_2_FEET;
-    autoStraight = pidController.calculate(encoderToFeet, setpoint);
-  }
+  public DriveSubsystem() {}
 
   public void myLittleGoXMeter() {
     differentialDrive.arcadeDrive(autoStraight, 0);
@@ -92,5 +84,14 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {}
+  public void periodic() {
+    rightMotorControllerGroup.setInverted(true);
+    rightEncoder = frontRightSpark.getEncoder();
+    leftEncoder = frontLeftSpark.getEncoder();
+    SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
+    SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
+    encoderToFeet = (rightEncoder.getCountsPerRevolution() + leftEncoder.getCountsPerRevolution()/2) * constants.K_DRIVE_TICK_2_FEET;
+    autoStraight = pidController.calculate(encoderToFeet, setpoint);
+
+  }
 }
