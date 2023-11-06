@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -29,8 +30,8 @@ public class DriveSubsystem extends SubsystemBase {
   CANSparkMax frontRightSpark = new CANSparkMax(driveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
   CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
-  RelativeEncoder rightEncoder = frontRightSpark.getEncoder();
-  RelativeEncoder leftEncoder = frontLeftSpark.getEncoder();
+  RelativeEncoder rightEncoder;
+  RelativeEncoder leftEncoder;
 
   MotorControllerGroup rightMotorControllerGroup = new MotorControllerGroup(frontRightSpark,rearRightSpark);
   MotorControllerGroup leftMotorControllerGroup = new MotorControllerGroup(frontLeftSpark,rearLeftSpark);
@@ -45,11 +46,24 @@ public class DriveSubsystem extends SubsystemBase {
 
   RotationalDrive rotationalDrive = new RotationalDrive(autoConfigurer, navx);
   StraightDrive straightDrive = new StraightDrive(autoConfigurer, leftEncoder, rightEncoder);
-  
+
+  PIDController pidController = new PIDController(0, 0, 0);
+
+  double encoderToFeet;
+  double setpoint;
+  double autoStraight;
   public DriveSubsystem() {
     rightMotorControllerGroup.setInverted(true);
+    rightEncoder = frontRightSpark.getEncoder();
+    leftEncoder = frontLeftSpark.getEncoder();
     SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
     SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
+    encoderToFeet = (rightEncoder.getCountsPerRevolution() + leftEncoder.getCountsPerRevolution()/2) * constants.K_DRIVE_TICK_2_FEET;
+    autoStraight = pidController.calculate(encoderToFeet, setpoint);
+  }
+
+  public void myLittleGoXMeter() {
+    differentialDrive.arcadeDrive(autoStraight, 0);
   }
 
   public void arcadeDrive(double maxSpeed) {
