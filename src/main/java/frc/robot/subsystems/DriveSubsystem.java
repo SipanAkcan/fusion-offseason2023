@@ -55,12 +55,12 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void goXSecond(double speed) {
-    differentialDrive.arcadeDrive(speed, 0);
+    differentialDrive.arcadeDrive(-speed, 0);
   }
 
   public void goXMeter(double setpoint) {
     double output = straightDrive.goXmeter(setpoint);
-    differentialDrive.arcadeDrive(output, 0);
+    differentialDrive.arcadeDrive(-output, 0);
   }
 
   public void turnXSecond(double speed) {
