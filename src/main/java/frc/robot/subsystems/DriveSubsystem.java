@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -47,6 +48,8 @@ public class DriveSubsystem extends SubsystemBase {
   
   public DriveSubsystem() {
     rightMotorControllerGroup.setInverted(true);
+    SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
+    SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
   }
 
   public void arcadeDrive(double maxSpeed) {
@@ -58,8 +61,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void goXMeter(double setpoint) {
-    double output = straightDrive.goXmeter(setpoint);
-    differentialDrive.arcadeDrive(-output, 0);
+    differentialDrive.arcadeDrive(-straightDrive.goXmeter(setpoint), 0);
   }
 
   public void turnXSecond(double speed) {
@@ -67,8 +69,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void turnXDegrees(double setpoint, double speed) {
-    double output = rotationalDrive.turnXDegrees(setpoint);
-    differentialDrive.arcadeDrive(0, output);
+    differentialDrive.arcadeDrive(0, rotationalDrive.turnXDegrees(setpoint));
   }
 
   public void stopDriveMotors() {
