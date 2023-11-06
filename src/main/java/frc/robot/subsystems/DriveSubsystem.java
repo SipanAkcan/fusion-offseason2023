@@ -38,7 +38,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   AHRS navx = new AHRS(driveConstants.NAVX_PORT);
 
-
   Joystick driveJoystick = new Joystick(constants.JOYSTICK_PIN);
 
   AutoConfigurer autoConfigurer = new AutoConfigurer();
