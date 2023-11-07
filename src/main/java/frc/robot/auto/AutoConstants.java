@@ -10,7 +10,7 @@ public class AutoConstants {
 
     public static final double K_DRIVE_TICK_2_FEET = REDUCTION_GEAR / Math.PI * WHEEL_DIAMETER_INCHES * ENCODER_PPR / 12;
 
-    public static final double K_ENCODER_P = 0.0;
+    public static final double K_ENCODER_P = 0.01;
     public static final double K_ENCODER_I = 0.0;
     public static final double K_ENCODER_D = 0.0;
 

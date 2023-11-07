@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.arm_command.LookDown;
 import frc.robot.commands.arm_command.LookUp;
+import frc.robot.commands.auto_command.GoXMeter;
 import frc.robot.commands.gripper_command.InTake;
 import frc.robot.commands.gripper_command.Shoot;
 import frc.robot.subsystems.ArmSubsystem;
@@ -41,10 +42,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    //return new GoXSecond(driveSubsystem, 0.7, 2);
+    //return new GoXSecond(driveSubsystem, 0.5, 2);
     //return new TurnXSecond(driveSubsystem, 0.5, 1);
     //return new TurnXDegrees(driveSubsystem, 180, 0.5);
-    //return new GoXMeter(driveSubsystem, 1);
-    return null;
+    return new GoXMeter(driveSubsystem, 1);
+    //return null;
   }
 }

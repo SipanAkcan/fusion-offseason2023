@@ -46,28 +46,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   RotationalDrive rotationalDrive = new RotationalDrive(autoConfigurer, navx);
   StraightDrive straightDrive = new StraightDrive(autoConfigurer, leftEncoder, rightEncoder);
-
-  PIDController pidController = new PIDController(0, 0, 0);
-
-  double encoderToFeet;
-  double setpoint;
-  double autoStraight;
   public DriveSubsystem() {}
-
-  public void myLittleGoXMeter() {
-    differentialDrive.arcadeDrive(autoStraight, 0);
-  }
 
   public void arcadeDrive(double maxSpeed) {
     differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * -maxSpeed, driveJoystick.getRawAxis(2) * maxSpeed);
   }
 
   public void goXSecond(double speed) {
-    differentialDrive.arcadeDrive(-speed, 0);
+    differentialDrive.arcadeDrive(speed, 0);
   }
 
   public void goXMeter(double setpoint) {
-    differentialDrive.arcadeDrive(-straightDrive.goXmeter(setpoint), 0);
+    differentialDrive.arcadeDrive(straightDrive.goXmeter(setpoint), 0);
   }
 
   public void turnXSecond(double speed) {
@@ -83,6 +73,11 @@ public class DriveSubsystem extends SubsystemBase {
     rightMotorControllerGroup.stopMotor();
   }
 
+  public void resetEncoders() {
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
+  }
+
   @Override
   public void periodic() {
     rightMotorControllerGroup.setInverted(true);
@@ -90,8 +85,5 @@ public class DriveSubsystem extends SubsystemBase {
     leftEncoder = frontLeftSpark.getEncoder();
     SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
     SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
-    encoderToFeet = (rightEncoder.getCountsPerRevolution() + leftEncoder.getCountsPerRevolution()/2) * constants.K_DRIVE_TICK_2_FEET;
-    autoStraight = pidController.calculate(encoderToFeet, setpoint);
-
   }
 }
