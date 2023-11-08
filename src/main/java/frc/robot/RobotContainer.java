@@ -22,7 +22,8 @@ public class RobotContainer {
   ArmSubsystem armSubsystem = new ArmSubsystem();
   GripperSubsystem gripperubsystem = new GripperSubsystem();
   DriveSubsystem driveSubsystem;
-  Joystick joystick = new Joystick(constants.JOYSTICK_PIN);
+  Joystick omer = new Joystick(constants.OMER_PIN);
+  Joystick sevval = new Joystick(constants.SEVVAL_PIN);
   
   public RobotContainer() {
     driveSubsystem = new DriveSubsystem();
@@ -31,14 +32,14 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new JoystickButton(joystick, 1).whileTrue(new LookUp(armSubsystem, constants.ARM_SPEED));
-    new JoystickButton(joystick, 1).whileFalse(new LookUp(armSubsystem, 0));
-    new JoystickButton(joystick, 2).whileTrue(new LookDown(armSubsystem, constants.ARM_SPEED));
-    new JoystickButton(joystick, 2).whileFalse(new LookDown(armSubsystem, 0));
-    new JoystickButton(joystick, 3).whileTrue(new Shoot(gripperubsystem, constants.SHOOT_SPEED));
-    new JoystickButton(joystick, 3).whileFalse(new Shoot(gripperubsystem, 0));
-    new JoystickButton(joystick, 4).whileTrue(new InTake(gripperubsystem, constants.INTAKE_SPEED));
-    new JoystickButton(joystick, 4).whileFalse(new InTake(gripperubsystem, 0));
+    new JoystickButton(sevval, 1).whileTrue(new LookUp(armSubsystem, constants.ARM_SPEED));
+    new JoystickButton(sevval, 1).whileFalse(new LookUp(armSubsystem, 0));
+    new JoystickButton(sevval, 2).whileTrue(new LookDown(armSubsystem, constants.ARM_SPEED));
+    new JoystickButton(sevval, 2).whileFalse(new LookDown(armSubsystem, 0));
+    new JoystickButton(omer, 3).whileTrue(new Shoot(gripperubsystem, constants.SHOOT_SPEED));
+    new JoystickButton(omer, 3).whileFalse(new Shoot(gripperubsystem, 0));
+    new JoystickButton(sevval, 4).whileTrue(new InTake(gripperubsystem, constants.INTAKE_SPEED));
+    new JoystickButton(sevval, 4).whileFalse(new InTake(gripperubsystem, 0));
   }
 
   public Command getAutonomousCommand() {
