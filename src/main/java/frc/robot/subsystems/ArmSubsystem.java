@@ -21,6 +21,10 @@ public class ArmSubsystem extends SubsystemBase {
     armSpark.set(speed);  
   }
 
+  public void stopSystem(){
+    armSpark.set(0);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
