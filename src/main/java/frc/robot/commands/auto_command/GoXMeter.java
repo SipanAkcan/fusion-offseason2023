@@ -21,7 +21,7 @@ public class GoXMeter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    driveSubsystem.resetEncoders();
+    driveSubsystem.resetSensors();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -39,7 +39,6 @@ public class GoXMeter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-    return false;
+    return driveSubsystem.getAverageMeter() - setpoint > -0.08 && setpoint - driveSubsystem.getAverageMeter() > 0.08;
   }
 }
