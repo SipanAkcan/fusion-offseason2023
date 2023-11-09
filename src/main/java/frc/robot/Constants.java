@@ -27,8 +27,5 @@ public final class Constants {
   public final double DRIVE_SPEED = 0.6;
   public final double INTAKE_SPEED = 0.4;
   public final double SHOOT_SPEED = 0.28;
-  public final double ARM_SPEED = 0.3;
-
-  public final double K_DRIVE_TICK_2_FEET = 1.0 / 128 * 6 * Math.PI / 12;
-  
+  public final double ARM_SPEED = 0.3;  
 }

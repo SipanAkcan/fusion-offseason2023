@@ -42,7 +42,7 @@ public class RobotContainer {
     return new LookUp(armSubsystem, constants.ARM_SPEED).withTimeout(1.5).andThen(
         new Shoot(gripperubsystem, constants.SHOOT_SPEED).withTimeout(1)).andThen(
           new LookDown(armSubsystem, constants.ARM_SPEED).withTimeout(1)).andThen(
-            new GoXSecond(driveSubsystem, -constants.DRIVE_SPEED, 1.8)
+            new GoXSecond(driveSubsystem, -constants.DRIVE_SPEED, 3)
           );
     //return new TurnXSecond(driveSubsystem, 0.5, 1);
     //return null;
