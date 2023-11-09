@@ -29,9 +29,10 @@ public class RobotContainer {
   GripperSubsystem gripperubsystem;
   DriveSubsystem driveSubsystem;
 
-  Joystick joystick = new Joystick(Constants.JOYSTICK_PIN);
-
   SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+  Joystick omer = new Joystick(constants.OMER_PIN);
+  Joystick sevval = new Joystick(constants.SEVVAL_PIN);
   
   public RobotContainer() {
     driveSubsystem = new DriveSubsystem();
@@ -70,10 +71,12 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+
     new JoystickButton(joystick, 1).whileTrue(new LookUp(armSubsystem, Constants.ArmConstants.ARM_SPEED).repeatedly());
     new JoystickButton(joystick, 2).whileTrue(new LookDown(armSubsystem, -Constants.ArmConstants.ARM_SPEED).repeatedly());
     new JoystickButton(joystick, 3).whileTrue(new Shoot(gripperubsystem, Constants.GripperConstants.SHOOT_SPEED).repeatedly());
     new JoystickButton(joystick, 4).whileTrue(new InTake(gripperubsystem, Constants.GripperConstants.INTAKE_SPEED).repeatedly());
+
   }
 
   public Command getAutonomousCommand() {
