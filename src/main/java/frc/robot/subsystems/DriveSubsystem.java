@@ -23,13 +23,13 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  Constants constants = new Constants();
+
   DriveConstants driveConstants = new DriveConstants();
 
-  CANSparkMax frontLeftSpark = new CANSparkMax(driveConstants.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax rearLeftSpark = new CANSparkMax(driveConstants.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax frontRightSpark = new CANSparkMax(driveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
-  CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax frontLeftSpark = new CANSparkMax(Constants.DriveConstants.FRONT_LEFT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearLeftSpark = new CANSparkMax(Constants.DriveConstants.REAR_LEFT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax frontRightSpark = new CANSparkMax(Constants.DriveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
+  CANSparkMax rearRightSpark = new CANSparkMax(Constants.DriveConstants.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
   RelativeEncoder rightEncoder;
   RelativeEncoder leftEncoder;
@@ -39,9 +39,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   DifferentialDrive differentialDrive = new DifferentialDrive(rightMotorControllerGroup, leftMotorControllerGroup);
 
-  AHRS navx = new AHRS(driveConstants.NAVX_PORT);
+  AHRS navx = new AHRS(Constants.DriveConstants.NAVX_PORT);
 
-  Joystick driveJoystick = new Joystick(constants.JOYSTICK_PIN);
+  Joystick driveJoystick = new Joystick(Constants.OMER_PIN);
 
   public ProfiledPIDController speedPIDController = new ProfiledPIDController(3, 0, 0, new Constraints(2, 1.5));
   public ProfiledPIDController rotationPIDController = new ProfiledPIDController(0.07, 0, 0, new Constraints(1.5, 1.5));
@@ -51,6 +51,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     rightEncoder = frontRightSpark.getEncoder();
     leftEncoder = frontLeftSpark.getEncoder();
+    resetSensors();
   }
 
   public void arcadeDrive(double maxSpeed) {
