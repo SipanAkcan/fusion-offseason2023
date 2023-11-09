@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArcadeDrive;
 import frc.robot.commands.arm_command.LookDown;
 import frc.robot.commands.arm_command.LookUp;
-import frc.robot.commands.auto_command.GoXMeter;
+import frc.robot.commands.auto_command.GoXSecond;
 import frc.robot.commands.gripper_command.InTake;
 import frc.robot.commands.gripper_command.Shoot;
 import frc.robot.subsystems.ArmSubsystem;
@@ -32,21 +32,19 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new JoystickButton(sevval, 1).whileTrue(new LookUp(armSubsystem, constants.ARM_SPEED));
-    new JoystickButton(sevval, 1).whileFalse(new LookUp(armSubsystem, 0));
-    new JoystickButton(sevval, 2).whileTrue(new LookDown(armSubsystem, constants.ARM_SPEED));
-    new JoystickButton(sevval, 2).whileFalse(new LookDown(armSubsystem, 0));
-    new JoystickButton(omer, 3).whileTrue(new Shoot(gripperubsystem, constants.SHOOT_SPEED));
-    new JoystickButton(omer, 3).whileFalse(new Shoot(gripperubsystem, 0));
-    new JoystickButton(sevval, 4).whileTrue(new InTake(gripperubsystem, constants.INTAKE_SPEED));
-    new JoystickButton(sevval, 4).whileFalse(new InTake(gripperubsystem, 0));
+    new JoystickButton(sevval, 3).whileTrue(new LookUp(armSubsystem, constants.ARM_SPEED));
+    new JoystickButton(sevval, 5).whileTrue(new LookDown(armSubsystem, constants.ARM_SPEED));
+    new JoystickButton(omer, 1).whileTrue(new Shoot(gripperubsystem, constants.SHOOT_SPEED));
+    new JoystickButton(sevval, 1).whileTrue(new InTake(gripperubsystem, constants.INTAKE_SPEED));
   }
 
   public Command getAutonomousCommand() {
-    //return new GoXSecond(driveSubsystem, 0.5, 2);
+    return new LookUp(armSubsystem, constants.ARM_SPEED).withTimeout(1.5).andThen(
+        new Shoot(gripperubsystem, constants.SHOOT_SPEED).withTimeout(1)).andThen(
+          new LookDown(armSubsystem, constants.ARM_SPEED).withTimeout(1)).andThen(
+            new GoXSecond(driveSubsystem, -constants.DRIVE_SPEED, 1.8)
+          );
     //return new TurnXSecond(driveSubsystem, 0.5, 1);
-    //return new TurnXDegrees(driveSubsystem, 180, 0.5);
-    return new GoXMeter(driveSubsystem, 1);
     //return null;
   }
 }

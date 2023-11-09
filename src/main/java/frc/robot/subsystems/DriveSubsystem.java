@@ -6,20 +6,13 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.auto.AutoConfigurer;
-import frc.robot.auto.RotationalDrive;
-import frc.robot.auto.StraightDrive;
 
 public class DriveSubsystem extends SubsystemBase {
   Constants constants = new Constants();
@@ -30,9 +23,6 @@ public class DriveSubsystem extends SubsystemBase {
   CANSparkMax frontRightSpark = new CANSparkMax(driveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
   CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
-  RelativeEncoder rightEncoder;
-  RelativeEncoder leftEncoder;
-
   MotorControllerGroup rightMotorControllerGroup = new MotorControllerGroup(frontRightSpark,rearRightSpark);
   MotorControllerGroup leftMotorControllerGroup = new MotorControllerGroup(frontLeftSpark,rearLeftSpark);
 
@@ -40,13 +30,11 @@ public class DriveSubsystem extends SubsystemBase {
 
   AHRS navx = new AHRS(driveConstants.NAVX_PORT);
 
-  Joystick driveJoystick = new Joystick(constants.JOYSTICK_PIN);
+  Joystick driveJoystick = new Joystick(constants.OMER_PIN);
 
-  AutoConfigurer autoConfigurer = new AutoConfigurer();
-
-  RotationalDrive rotationalDrive = new RotationalDrive(autoConfigurer, navx);
-  StraightDrive straightDrive = new StraightDrive(autoConfigurer, leftEncoder, rightEncoder);
-  public DriveSubsystem() {}
+  public DriveSubsystem() {
+    rightMotorControllerGroup.setInverted(true);
+  }
 
   public void arcadeDrive(double maxSpeed) {
     differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * -maxSpeed, driveJoystick.getRawAxis(2) * maxSpeed);
@@ -56,34 +44,15 @@ public class DriveSubsystem extends SubsystemBase {
     differentialDrive.arcadeDrive(speed, 0);
   }
 
-  public void goXMeter(double setpoint) {
-    differentialDrive.arcadeDrive(straightDrive.goXmeter(setpoint), 0);
-  }
-
   public void turnXSecond(double speed) {
     differentialDrive.arcadeDrive(0, speed);
   }
 
-  public void turnXDegrees(double setpoint, double speed) {
-    differentialDrive.arcadeDrive(0, rotationalDrive.turnXDegrees(setpoint));
-  }
-
   public void stopDriveMotors() {
-    leftMotorControllerGroup.stopMotor();
-    rightMotorControllerGroup.stopMotor();
+    leftMotorControllerGroup.set(0);
+    rightMotorControllerGroup.set(0);
   }
-
-  public void resetEncoders() {
-    leftEncoder.setPosition(0);
-    rightEncoder.setPosition(0);
-  }
-
   @Override
   public void periodic() {
-    rightMotorControllerGroup.setInverted(true);
-    rightEncoder = frontRightSpark.getEncoder();
-    leftEncoder = frontLeftSpark.getEncoder();
-    SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
-    SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
   }
 }

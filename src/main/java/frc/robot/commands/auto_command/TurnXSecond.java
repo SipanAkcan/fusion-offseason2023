@@ -4,7 +4,6 @@
 
 package frc.robot.commands.auto_command;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -13,21 +12,16 @@ public class TurnXSecond extends CommandBase {
   DriveSubsystem driveSubsystem;
   double speed;
   double second;
-  Timer timer;
-  public TurnXSecond(DriveSubsystem driveSubsystem, double speed, double second) {
+  public TurnXSecond(DriveSubsystem driveSubsystem, double speed) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.driveSubsystem = driveSubsystem;
     this.speed = speed;
-    this.second = second;
     addRequirements(driveSubsystem);
-    timer = new Timer();
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    timer.reset();
-    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -45,9 +39,6 @@ public class TurnXSecond extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (timer.get() > second) {
-      return true;
-    }
     return false;
   }
 }
