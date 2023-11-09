@@ -9,7 +9,8 @@ import edu.wpi.first.wpilibj.SPI.Port;
 
 public final class Constants {
 
-  public static final int JOYSTICK_PIN = 0;
+  public static final int OMER_PIN = 0;
+  public static final int SEVVAL_PIN = 0;
 
   public static class DriveConstants {
     public static final int FRONT_LEFT_SPARK_ID = 2;
