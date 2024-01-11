@@ -6,10 +6,13 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
@@ -23,6 +26,9 @@ public class DriveSubsystem extends SubsystemBase {
   CANSparkMax frontRightSpark = new CANSparkMax(driveConstants.FRONT_RIGHT_SPARK_ID, MotorType.kBrushless);
   CANSparkMax rearRightSpark = new CANSparkMax(driveConstants.REAR_RIGHT_SPARK_ID, MotorType.kBrushless);
 
+  RelativeEncoder rightEncoder;
+  RelativeEncoder leftEncoder;
+
   MotorControllerGroup rightMotorControllerGroup = new MotorControllerGroup(frontRightSpark,rearRightSpark);
   MotorControllerGroup leftMotorControllerGroup = new MotorControllerGroup(frontLeftSpark,rearLeftSpark);
 
@@ -32,9 +38,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   Joystick driveJoystick = new Joystick(constants.OMER_PIN);
 
-  public DriveSubsystem() {
-    rightMotorControllerGroup.setInverted(true);
-  }
+  public DriveSubsystem() {}
 
   public void arcadeDrive(double maxSpeed) {
     differentialDrive.arcadeDrive(driveJoystick.getRawAxis(1) * -maxSpeed, driveJoystick.getRawAxis(2) * maxSpeed);
@@ -49,10 +53,21 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void stopDriveMotors() {
-    leftMotorControllerGroup.set(0);
-    rightMotorControllerGroup.set(0);
+    leftMotorControllerGroup.stopMotor();
+    rightMotorControllerGroup.stopMotor();
   }
+
+  public void resetEncoders() {
+    leftEncoder.setPosition(0);
+    rightEncoder.setPosition(0);
+  }
+
   @Override
   public void periodic() {
+    rightMotorControllerGroup.setInverted(true);
+    rightEncoder = frontRightSpark.getEncoder();
+    leftEncoder = frontLeftSpark.getEncoder();
+    SmartDashboard.putNumber("right encoder:", rightEncoder.getCountsPerRevolution());
+    SmartDashboard.putNumber("left encoder:", leftEncoder.getCountsPerRevolution());
   }
 }
